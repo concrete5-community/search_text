@@ -2,23 +2,21 @@
 
 namespace Concrete\Package\SearchText\Controller\SinglePage\Dashboard\System\SearchText;
 
-use A3020\SearchText\Database\ListTables;
 use Concrete\Core\Asset\AssetList;
 use Concrete\Core\Http\ResponseAssetGroup;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
-final class Database extends DashboardPageController
+final class Files extends DashboardPageController
 {
     public function on_before_render()
     {
         $assetList = AssetList::getInstance();
         $assetList->register('css', 'search_text', 'css/search-text.css', [], 'search_text');
-        $assetList->register('javascript', 'search_text/database', 'js/search-database.js', [], 'search_text');
+        $assetList->register('javascript', 'search_text/files', 'js/search-files.js', [], 'search_text');
 
         $ag = ResponseAssetGroup::get();
-        $ag->requireAsset('select2');
         $ag->requireAsset('css', 'search_text');
-        $ag->requireAsset('javascript', 'search_text/database');
+        $ag->requireAsset('javascript', 'search_text/files');
 
         $ag->addHeaderAsset('<script>
             var SEARCH_TEXT_SENT_PENDING = \'<i class="fa fa-hourglass-2"></i> ' . t('Request has been sent. Waiting...') . '\';
@@ -32,20 +30,24 @@ final class Database extends DashboardPageController
 
     public function view()
     {
-        $this->set('pageTitle', t('Search Text in Database'));
-        $this->set('tableOptions', $this->getTableOptions());
+        $this->set('pageTitle', t('Search Text in Files'));
         $this->set('results', []);
+        $this->set('fileTypeOptions', $this->getFileTypeOptions());
+
+        $this->set('excludedDirectories', implode("\n", [
+            DIRNAME_CORE,
+            DIRNAME_APPLICATION . '/files',
+        ]));
     }
 
-    /**
-     * Return a key+value option list of all tables.
-     *
-     * @return array
-     */
-    public function getTableOptions()
+    private function getFileTypeOptions()
     {
-        $tables = $this->app->make(ListTables::class)->get();
-
-        return array_combine($tables, $tables);
+        return [
+            '*' => t('All'),
+            '*.php' => t('PHP'),
+            '*.txt' => t('Text'),
+            '*.json' => t('JSON'),
+            '*.xml' => t('XML'),
+        ];
     }
 }

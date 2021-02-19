@@ -14,10 +14,11 @@ final class Highlight implements ApplicationAwareInterface
      *
      * @param string $fulltext the whole text
      * @param string $highlight The text to be highlighted
+     * @param int $width Number of chars before / after the highlighted text.
      *
      * @return string|null
      */
-    public function change($fulltext, $highlight)
+    public function change($fulltext, $highlight, $width = 45)
     {
         // Remove line end characters.
         $text = @preg_replace("#\n|\r#", ' ', $fulltext);
@@ -28,7 +29,7 @@ final class Highlight implements ApplicationAwareInterface
         $highlight = str_replace(['"', "'", '&quot;'], '', $highlight);
 
         $result = null;
-        $regex = '(.{0,45})' . preg_quote($highlight, '#') . '(.{0,45})';
+        $regex = '(.{0,'.$width.'})' . preg_quote($highlight, '#') . '(.{0,'.$width.'})';
         preg_match_all("#$regex#ui", $text, $matches);
 
         if (!empty($matches[0])) {

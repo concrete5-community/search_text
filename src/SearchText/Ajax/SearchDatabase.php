@@ -8,7 +8,7 @@ use Concrete\Core\Application\ApplicationAwareTrait;
 use Concrete\Core\Error\UserMessageException;
 use Concrete\Core\Http\ResponseFactoryInterface;
 
-final class Search extends \Concrete\Core\Controller\Controller implements ApplicationAwareInterface
+final class SearchDatabase extends \Concrete\Core\Controller\Controller implements ApplicationAwareInterface
 {
     use ApplicationAwareTrait, PermissionsTrait;
 
@@ -22,7 +22,7 @@ final class Search extends \Concrete\Core\Controller\Controller implements Appli
             throw new UserMessageException($token->getErrorMessage());
         }
 
-        set_time_limit(60);
+        set_time_limit(30);
 
         /** @var \A3020\SearchText\Database\Search $search */
         $search = $this->app->make(\A3020\SearchText\Database\Search::class);

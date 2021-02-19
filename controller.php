@@ -10,7 +10,7 @@ final class Controller extends Package
 {
     protected $pkgHandle = 'search_text';
     protected $appVersionRequired = '8.3.1';
-    protected $pkgVersion = '1.0.0';
+    protected $pkgVersion = '1.1.0';
     protected $pkgAutoloaderRegistries = [
         'src/SearchText' => '\A3020\SearchText',
     ];
@@ -22,7 +22,7 @@ final class Controller extends Package
 
     public function getPackageDescription()
     {
-        return t('Search text in your database.');
+        return t('Search text in your database and files.');
     }
 
     public function on_start()
@@ -30,7 +30,8 @@ final class Controller extends Package
         /** @var \Concrete\Core\Routing\Router $router */
         $router = $this->app->make(Router::class);
 
-        $router->register('/ccm/search_text/search','\A3020\SearchText\Ajax\Search::view');
+        $router->register('/ccm/search_text/search','\A3020\SearchText\Ajax\SearchDatabase::view');
+        $router->register('/ccm/search_text/search_files','\A3020\SearchText\Ajax\SearchFiles::view');
         $router->register('/ccm/search_text/view_record','\A3020\SearchText\Ajax\ViewRecord::view');
     }
 

@@ -24,6 +24,7 @@ final class Installer implements ApplicationAwareInterface
         $pages = [
             '/dashboard/system/search_text' => 'Search Text',
             '/dashboard/system/search_text/database' => 'In Database',
+            '/dashboard/system/search_text/files' => 'In Files',
         ];
 
         foreach ($pages as $path => $name) {
